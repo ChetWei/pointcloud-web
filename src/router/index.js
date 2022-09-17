@@ -1,24 +1,50 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+import IndexView from "@/views/IndexView";
+
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/AboutView.vue')
-  }
+    {
+        path: '/',
+        redirect:'/index/home'
+    },
+    {
+        path: '/index',
+        name: 'index',
+        component: IndexView,
+        children:[
+            {
+                path: 'home',
+                name: 'home',
+                component: ()=>import('@/views/HomeView')
+            },
+            {
+                path: 'download',
+                name: 'download',
+                component: ()=>import('@/views/DataPreviewView')
+            },
+            {
+                path: 'process',
+                name: 'process',
+                component: ()=>import('@/views/DataProcessView')
+            },
+            {
+                path: 'upload',
+                name: 'upload',
+                component: ()=>import('@/views/DataUploadView')
+            }
+        ]
+    },
+
+
 ]
 
 const router = new VueRouter({
-  routes
+    mode: 'history',
+    routes
 })
 
 export default router

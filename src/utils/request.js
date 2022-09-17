@@ -1,36 +1,35 @@
 import axios from 'axios'
 
 
-const request = axios.create({
+const instance = axios.create({
     baseURL: '/api',
-    timeout: 5000
+    timeout: 8000
 })
 
-//请求拦截
-request.interceptors.request.use(
-    config => {
+// 添加请求拦截器
+instance.interceptors.request.use(
+    function (config) {
+        // axios请求前的逻辑处理
+        config.headers = {
+            'Content-Type':'application/json' //配置请求头
+        }
         return config
     },
-    error => {
-        console.log(error)
+    function (error) {
+        // 对请求错误做些什么
         return Promise.reject(error)
     }
 )
 
-//响应拦截
-request.interceptors.response.use(
-    response => {
-        return res
+// 添加响应拦截器
+instance.interceptors.response.use(
+    function (response) {
+        // 对响应数据做点什么
+        return response.data
     },
-    error => {
-        console.log('err' + error) // for debug
-        Message({
-            message: error.message,
-            type: 'error',
-            duration: 5 * 1000
-        })
+    function (error) {
+        // 对响应错误做点什么
         return Promise.reject(error)
     }
 )
-
-export default request
+export default instance
